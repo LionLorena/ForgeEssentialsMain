@@ -15,7 +15,7 @@ public class FEBiomeTypes implements BiomeTypes {
 		List<BiomeType> ret = new ArrayList<com.sk89q.worldedit.BiomeType>();
 
 		for (BiomeGenBase biome : BiomeGenBase.biomeList) {
-			if (biome != null) ret.add(new BiomeType(biome));
+			if (biome != null) ret.add(new FEBiomeType(biome));
 		}
 
 		return ret;

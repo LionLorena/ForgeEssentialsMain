@@ -13,16 +13,13 @@ import com.sk89q.worldedit.WorldVector;
 import com.sk89q.worldedit.bags.BlockBag;
 
 public class FELocalPlayer extends LocalPlayer {
-protected FELocalPlayer(ServerInterface server) {
-		super(server);
-		// TODO Auto-generated constructor stub
-	}
+
 
 private final EntityPlayer player;
 	private final FELocalWorld world;
 	private final FEBlockBag bag;
 
-	public LocalPlayer(EntityPlayer player) {
+	public void FELocalPlayer(EntityPlayer player) {
 		super(new FEServerInterface());
 
 		this.player = player;

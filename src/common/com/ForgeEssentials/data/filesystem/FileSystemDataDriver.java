@@ -7,8 +7,10 @@ import net.minecraftforge.common.Property;
 
 import com.ForgeEssentials.core.ForgeEssentials;
 import com.ForgeEssentials.core.PlayerInfo;
+import com.ForgeEssentials.data.DataAdapter;
 import com.ForgeEssentials.data.DataDriver;
 import com.ForgeEssentials.data.DataStorageManager;
+import com.ForgeEssentials.data.InlineDataAdapter;
 import com.ForgeEssentials.permission.Zone;
 import com.ForgeEssentials.util.FunctionHelper;
 
@@ -23,17 +25,11 @@ import cpw.mods.fml.common.Side;
  */
 public class FileSystemDataDriver extends DataDriver
 {
+
 	public static final String driverType = "FileSystem";
 	
 	private String baseFilePath;
 	public static String newline = "\r\n";
-
-	public FileSystemDataDriver()
-	{
-		super();
-		
-		DataDriver.instance = this;
-	}
 	
 	@Override
 	public boolean parseConfigs(Configuration config, String worldName)
@@ -75,14 +71,16 @@ public class FileSystemDataDriver extends DataDriver
 		return this.baseFilePath;
 	}
 
-	/**
-	 * This function binds all DataAdapters
-	 * @param obj 
-	 */
-	protected void registerAdapters()
+	@Override
+	protected void registerAdapterForType(Class type)
 	{
-		this.map.put(PlayerInfo.class, new PlayerInfoDataAdapter());
-		this.map.put(Zone.class, new ZoneDataAdapter());
-		// Add additional flat-file storage classes here.
+		this.map.put(type, new FileSystemDataAdapter(this, type));		
+	}
+
+	@Override
+	protected void registerInlineAdapterForType(Class type)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

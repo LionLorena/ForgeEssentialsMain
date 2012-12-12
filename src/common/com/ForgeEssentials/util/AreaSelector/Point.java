@@ -2,11 +2,23 @@ package com.ForgeEssentials.util.AreaSelector;
 
 import java.io.Serializable;
 
+import com.ForgeEssentials.data.SaveableField;
+import com.ForgeEssentials.data.SaveableObject;
+
+@SaveableObject(SaveInline=true)
 public class Point implements Serializable, Comparable<Point>
 {
+	@SaveableField
 	public int x;
+	@SaveableField
 	public int y;
+	@SaveableField
 	public int z;
+	
+	public Point()
+	{
+		this.x = this.y = this.z = 0;
+	}
 
 	public Point(int x, int y, int z)
 	{

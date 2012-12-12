@@ -12,6 +12,9 @@ import java.util.Stack;
 import net.minecraft.src.EntityPlayer;
 
 import com.ForgeEssentials.WorldControl.BackupArea;
+import com.ForgeEssentials.data.SaveableField;
+import com.ForgeEssentials.data.SaveableObject;
+import com.ForgeEssentials.data.SavedField;
 import com.ForgeEssentials.permission.Zone;
 import com.ForgeEssentials.util.FunctionHelper;
 import com.ForgeEssentials.util.OutputHandler;
@@ -21,6 +24,7 @@ import com.ForgeEssentials.util.AreaSelector.WorldPoint;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 
+@SaveableObject
 public class PlayerInfo
 {
 	private static HashMap<String, PlayerInfo> playerInfoMap = new HashMap<String, PlayerInfo>();
@@ -34,7 +38,8 @@ public class PlayerInfo
 			info = new PlayerInfo(player);
 			
 			// Attempt to populate this info with some data from our storage.
-			if (!ForgeEssentials.getInstanceDataDriver().loadObject(player.username, info))
+			SavedField[] data;
+			if ((data = ForgeEssentials.getInstanceDataDriver().loadObject(PlayerInfo.class, player.username)) != null)
 			{
 				// Loading was unsuccessful. Save this object while we can.
 				info.save();
@@ -65,24 +70,33 @@ public class PlayerInfo
 
 	private boolean hasClientMod;
 	private String worldName;
+	@SaveableField(objectLoadingField=true)
 	private String username;
 
 	// wand stuff
+	@SaveableField
 	public int wandID;
+	@SaveableField
 	public int wandDmg;
+	@SaveableField
 	public boolean wandEnabled;
 
 	// selection stuff
+	@SaveableField(nullableField=true)
 	private Point sel1;
+	@SaveableField(nullableField=true)
 	private Point sel2;
 	private Selection selection;
 
 	// permissions stuff
 	private HashMap<String, String> areaGroupMap;
 
+	@SaveableField(nullableField=true)
 	public WorldPoint home;
+	@SaveableField(nullableField=true)
 	public WorldPoint lastDeath;
 	// 0: Normal 1: World spawn 2: Bed 3: Home
+	@SaveableField
 	public int spawnType;
 
 	// undo and redo stuff

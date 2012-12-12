@@ -106,8 +106,7 @@ public class ModulePermissions implements IFEModule
 	@Override
 	public void serverStopping(FMLServerStoppingEvent e)
 	{
-		for (Zone zone : ZoneManager.zoneMap.values())
-			DataDriver.saveObject(zone);
+		// TODO: Saving.
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.ForgeEssentials.util.AreaSelector;
 
+import com.ForgeEssentials.data.SaveableField;
+import com.ForgeEssentials.data.SaveableObject;
+
 import net.minecraft.src.World;
 
 /**
@@ -8,8 +11,10 @@ import net.minecraft.src.World;
  * @author MysteriousAges
  * 
  */
+@SaveableObject(SaveInline=true)
 public class WorldPoint extends Point
 {
+	@SaveableField
 	public int dim;
 
 	public WorldPoint(int dimension, int x, int y, int z)

@@ -91,13 +91,6 @@ public class SQLDataDriver extends DataDriver
 		
 		return isSuccess;
 	}
-
-	@Override
-	protected void registerAdapters()
-	{
-		this.map.put(PlayerInfo.class, new PlayerInfoDataAdapter());
-
-	}
 	
 	public Connection getConnection()
 	{

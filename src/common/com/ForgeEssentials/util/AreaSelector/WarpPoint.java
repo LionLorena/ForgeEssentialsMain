@@ -1,9 +1,14 @@
 package com.ForgeEssentials.util.AreaSelector;
 
+import com.ForgeEssentials.data.SaveableField;
+import com.ForgeEssentials.data.SaveableObject;
+
+@SaveableObject(SaveInline=true)
 public class WarpPoint extends WorldPoint
 {
-	
+	@SaveableField
 	public float pitch;
+	@SaveableField
 	public float yaw;
 
 	public WarpPoint(int dimension, int x, int y, int z, float playerPitch, float playerYaw)

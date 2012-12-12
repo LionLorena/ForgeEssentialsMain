@@ -14,16 +14,13 @@ import com.ForgeEssentials.util.OutputHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Side;
 
-public class NBTDataDriver extends DataDriver {
+public class NBTDataDriver extends DataDriver
+{
 	private String baseFilePath;
-	public NBTDataDriver()
-	{
-		super();
-		
-		DataDriver.instance = this;
-	}
+
 	@Override
-	public boolean parseConfigs(Configuration config, String worldName) {
+	public boolean parseConfigs(Configuration config, String worldName)
+{
 	Property prop;
 		
 		prop = config.get("Data.NBT", "useFEDataDir", false);
@@ -53,17 +50,8 @@ public class NBTDataDriver extends DataDriver {
 		return true;
 	}
 
-	@Override
-	protected void registerAdapters() {
-		this.map.put(PlayerInfo.class, new PlayerInfoDataAdapter());
-
-		
-	}
-
 	public String getBaseBath()
 	{
 		return this.baseFilePath;
 	}
-
-
 }

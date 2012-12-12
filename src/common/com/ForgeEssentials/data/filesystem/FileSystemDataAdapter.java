@@ -4,9 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import com.ForgeEssentials.data.IDataAdapter;
-import com.ForgeEssentials.util.AreaSelector.Point;
-import com.ForgeEssentials.util.AreaSelector.WorldPoint;
+import com.ForgeEssentials.data.*;
 
 /**
  * This class provides some handy conversions between ForgeEssentials types and
@@ -17,26 +15,41 @@ import com.ForgeEssentials.util.AreaSelector.WorldPoint;
  *
  * @param <T> Class that extending Persisters save data for.
  */
-public abstract class FileSystemDataAdapter<SavedType, KeyType> implements IDataAdapter<SavedType, KeyType>
-{	
-	// Convenience function to convert Points into an int[3]
-	protected int[] pointToIntArray(Point p)
+public class FileSystemDataAdapter extends DataAdapter
+{
+
+	public FileSystemDataAdapter(DataDriver driver, Class type)
 	{
-		int[] arr = new int[3];
-		arr[0] = p.x;
-		arr[1] = p.y;
-		arr[2] = p.z;
-		return arr;
+		super(driver, type);
+		// TODO Auto-generated constructor stub
 	}
-	
-	// Convenience function to convert WorldPoints into ant int[4]
-	protected int[] worldPointToIntArray(WorldPoint p)
+
+	@Override
+	public boolean saveData(Object object)
 	{
-		int[] arr = new int[4];
-		arr[0] = p.x;
-		arr[1] = p.y;
-		arr[2] = p.z;
-		arr[3] = p.dim;
-		return arr;
+		// TODO Auto-generated method stub
+		return false;
 	}
+
+	@Override
+	public SavedField[] loadData(Object uniqueKey)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SavedField[][] loadAll()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteData(Object uniqueKey)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}	
+
 }

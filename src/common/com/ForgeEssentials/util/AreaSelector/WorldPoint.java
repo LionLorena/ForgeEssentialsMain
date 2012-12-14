@@ -16,6 +16,8 @@ public class WorldPoint extends Point
 {
 	@SaveableField
 	public int dim;
+	
+	public WorldPoint() { }
 
 	public WorldPoint(int dimension, int x, int y, int z)
 	{

@@ -10,6 +10,8 @@ public class WarpPoint extends WorldPoint
 	public float pitch;
 	@SaveableField
 	public float yaw;
+	
+	public WarpPoint() { }
 
 	public WarpPoint(int dimension, int x, int y, int z, float playerPitch, float playerYaw)
 	{

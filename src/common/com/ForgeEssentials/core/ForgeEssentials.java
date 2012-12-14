@@ -152,7 +152,7 @@ public class ForgeEssentials
 	public void setDataStore(DataDriver driver)
 	{
 		// Only set this once to prevent strangeness.
-		if (this.dataStore != null)
+		if (this.dataStore == null)
 		{
 			this.dataStore = driver;
 		}

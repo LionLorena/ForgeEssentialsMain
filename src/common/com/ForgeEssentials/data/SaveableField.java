@@ -15,6 +15,6 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 public @interface SaveableField
 {
-	boolean objectLoadingField() default false;
+	boolean uniqueLoadingField() default false;
 	boolean nullableField() default false;
 }

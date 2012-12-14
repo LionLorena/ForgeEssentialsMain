@@ -8,20 +8,13 @@ import com.ForgeEssentials.util.OutputHandler;
 
 
 public abstract class DataDriver
-{	
-	// Stores bindings between logic classes and their data classes.
-	protected HashMap<Class, DataAdapter> map;
-	// Stores bindings for classes saved inline and their adapters.
-	protected HashMap<Class, InlineDataAdapter> inlineMap;
-
+{
+	private HashMap<Class, TypeTagger> taggerList;
+	
 	public DataDriver()
 	{
-		
-		this.map = new HashMap<Class, DataAdapter>();
-		this.inlineMap = new HashMap<Class, InlineDataAdapter>();
+		this.taggerList = new HashMap<Class, TypeTagger>();
 	}
-
-	public abstract boolean parseConfigs(Configuration config, String worldName);
 
 	public Class getDataDriverType()
 	{
@@ -34,81 +27,84 @@ public abstract class DataDriver
 		SaveableObject a;
 		if ((a = (SaveableObject)type.getAnnotation(SaveableObject.class)) != null)
 		{
-			try
-			{
-				if (a.SaveInline())
-				{
-					this.registerInlineAdapterForType(type);
-				}
-				else
-				{
-					this.registerAdapterForType(type);
-				}
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+			// Create a tagger for this object and save it in our hashmap.
+			this.taggerList.put(type, new TypeTagger(this, type));
 		}
 		return flag;
 	}
-	
-	protected abstract void registerAdapterForType(Class type);
-	
-	protected abstract void registerInlineAdapterForType(Class type);
 
 	public boolean hasMapping(Object o)
 	{
-		return this.map.containsKey(o.getClass()) || this.inlineMap.containsKey(o.getClass());
-	}	
+		return this.taggerList.containsKey(o.getClass());
+	}
+	
+	public boolean hasMapping(Class type)
+	{
+		return this.taggerList.containsKey(type);
+	}
+	
+	public TypeTagger getTaggerForType(Class type)
+	{
+		if (!this.hasMapping(type))
+		{
+			this.registerClass(type);
+		}
+		return this.taggerList.get(type);
+	}
 
 	public boolean saveObject(Object o)
 	{
 		boolean flag = false;
-		if (this.hasMapping(o))
+		
+		TypeTagger t;
+		if ((t = getTaggerForType(o.getClass())) != null)
 		{
-			DataAdapter da = this.map.get(o.getClass());
-			
-			if (da != null)
-			{
-				flag = da.saveData(o);
-			}
-			else
-			{
-				OutputHandler.SOP("DataDriver " + " does not have an instance for " + o.getClass());
-			}
+			flag = true;
+			this.saveData(o.getClass(), t.getTaggedClassFromObject(o));
 		}
+		
 		return flag;
 	}
 
-	public SavedField[] loadObject(Class type, Object loadingKey)
+	public Object loadObject(Class type, Object loadingKey)
 	{
-		SavedField[] data = null;
-		if (this.hasMapping(type))
+		Object newObject = null;
+		TaggedClass data = this.loadData(type, loadingKey);
+
+		if (data != null)
 		{
-			DataAdapter da = this.map.get(type);
-				
-			if (da != null)
-			{
-				data = da.loadData(loadingKey);
-			}
-			else
-			{
-				OutputHandler.SOP("DataDriver does not have an instance for " + type.getName());
-			}
+			newObject = this.taggerList.get(type).createFromFields(data);
 		}
-		return data;
+		
+		return newObject;
 	}
 	
-	public SavedField[][] loadAllObjects(Class type)
+	public Object[] loadAllObjects(Class type)
 	{
-		// TODO: This.
-		return null;
+		ArrayList<Object> list = new ArrayList<Object>();
+		TaggedClass[] objectData = loadAll(type);
+		
+		// Each element of the field array represents an object, stored as an array of fields.
+		if (objectData != null && objectData.length > 0)
+		{
+			
+		}
+
+		return list.toArray(new Object[list.size()]);
 	}
 	
 	public boolean deleteObject(Class type, Object loadingKey)
 	{
-		// TODO: This.
-		return false;
+		return deleteData(type, loadingKey);
 	}
+
+	abstract public boolean parseConfigs(Configuration config, String worldName);
+
+	abstract protected boolean saveData(Class type, TaggedClass fieldList);
+	
+	abstract protected TaggedClass loadData(Class type, Object uniqueKey);
+	
+	abstract protected TaggedClass[] loadAll(Class type);
+	
+	abstract protected boolean deleteData(Class type, Object uniqueObjectKey);
 }

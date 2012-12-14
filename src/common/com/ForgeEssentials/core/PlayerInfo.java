@@ -14,7 +14,6 @@ import net.minecraft.src.EntityPlayer;
 import com.ForgeEssentials.WorldControl.BackupArea;
 import com.ForgeEssentials.data.SaveableField;
 import com.ForgeEssentials.data.SaveableObject;
-import com.ForgeEssentials.data.SavedField;
 import com.ForgeEssentials.permission.Zone;
 import com.ForgeEssentials.util.FunctionHelper;
 import com.ForgeEssentials.util.OutputHandler;
@@ -35,13 +34,11 @@ public class PlayerInfo
 
 		if (info == null)
 		{
-			info = new PlayerInfo(player);
-			
 			// Attempt to populate this info with some data from our storage.
-			SavedField[] data;
-			if ((data = ForgeEssentials.getInstanceDataDriver().loadObject(PlayerInfo.class, player.username)) != null)
+			if ((info = (PlayerInfo) ForgeEssentials.getInstanceDataDriver().loadObject(PlayerInfo.class, player.username)) == null)
 			{
 				// Loading was unsuccessful. Save this object while we can.
+				info = new PlayerInfo(player);
 				info.save();
 			}
 			
@@ -70,7 +67,7 @@ public class PlayerInfo
 
 	private boolean hasClientMod;
 	private String worldName;
-	@SaveableField(objectLoadingField=true)
+	@SaveableField(uniqueLoadingField=true)
 	private String username;
 
 	// wand stuff
